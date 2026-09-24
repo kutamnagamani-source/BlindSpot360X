@@ -137,7 +137,8 @@ export default function BlindSpotMap() {
     <Shell>
       <div className="flex h-[calc(100vh-3.5rem)] flex-col">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border/70 bg-background/95 px-4 py-2.5 sm:px-6">
+        <div className="relative flex flex-wrap items-center gap-2 border-b border-border/70 bg-background/90 px-4 py-2.5 backdrop-blur sm:px-6">
+          <div className="bs-topline absolute inset-x-0 bottom-0" />
           <Button variant="outline" size="sm" className="gap-1.5" onClick={useMyLocation}>
             <Crosshair className="size-3.5" /> Locate me
           </Button>
@@ -245,8 +246,9 @@ export default function BlindSpotMap() {
                 pathOptions={{
                   color: severityColor(issue.severity, issue.status),
                   fillColor: severityColor(issue.severity, issue.status),
-                  fillOpacity: 0.85,
-                  weight: 2,
+                  fillOpacity: 0.9,
+                  weight: 2.5,
+                  className: "bs-map-marker",
                 }}
               >
                 <Popup>
@@ -299,7 +301,7 @@ export default function BlindSpotMap() {
           </MapContainer>
 
           {/* Legend */}
-          <div className="absolute bottom-4 left-4 z-[500] rounded-lg border border-border/70 bg-background/90 p-3 backdrop-blur">
+          <div className="bs-glass absolute bottom-4 left-4 z-[500] rounded-lg p-3">
             <p className="bs-hud mb-2">legend</p>
             {(["critical", "high", "medium", "low"] as Severity[]).map((s) => (
               <div key={s} className="flex items-center gap-2 py-0.5">
@@ -350,7 +352,7 @@ export default function BlindSpotMap() {
                   filtered.map((issue) => (
                     <button
                       key={issue._id}
-                      className="w-full rounded-lg border border-border/50 bg-card/60 p-3 text-left transition-colors hover:border-primary/40"
+                      className="bs-glass bs-lift w-full rounded-lg p-3 text-left"
                       onClick={() =>
                         setCenter([issue.lat, issue.lng])
                       }

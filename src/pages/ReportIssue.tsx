@@ -264,7 +264,7 @@ export default function ReportIssue() {
 
         {/* Step 0 — Capture */}
         {step === 0 && (
-          <Card className="mt-6 border-border/60 bg-card/60">
+          <Card className="mt-6 bs-glass border-0">
             <CardContent className="p-6">
               <input
                 ref={fileInputRef}
@@ -345,7 +345,7 @@ export default function ReportIssue() {
 
         {/* Step 1 — AI analysis */}
         {step === 1 && analysis && (
-          <Card className="mt-6 border-primary/30 bg-card/60">
+          <Card className="mt-6 bs-glass border border-primary/30">
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
                 <Sparkles className="size-4 text-primary" />
@@ -413,7 +413,7 @@ export default function ReportIssue() {
 
         {/* Step 2 — Details */}
         {step === 2 && (
-          <Card className="mt-6 border-border/60 bg-card/60">
+          <Card className="mt-6 bs-glass border-0">
             <CardContent className="space-y-5 p-6">
               <div>
                 <Label className="text-xs text-muted-foreground">Category</Label>
@@ -536,7 +536,7 @@ export default function ReportIssue() {
 
         {/* Step 3 — Location */}
         {step === 3 && (
-          <Card className="mt-6 border-border/60 bg-card/60">
+          <Card className="mt-6 bs-glass border-0">
             <CardContent className="space-y-4 p-6">
               <Button
                 variant="outline"

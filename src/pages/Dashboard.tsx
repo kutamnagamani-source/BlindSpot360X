@@ -75,7 +75,7 @@ export default function Dashboard() {
               icon: CheckCircle2,
             },
           ].map((s) => (
-            <Card key={s.label} className="border-border/60 bg-card/60">
+            <Card key={s.label} className="bs-glass border-0">
               <CardContent className="flex items-center gap-4 p-5">
                 <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <s.icon className="size-5" />
@@ -90,7 +90,7 @@ export default function Dashboard() {
         </div>
 
         {/* Community impact meter */}
-        <Card className="mt-4 border-border/60 bg-card/60">
+        <Card className="mt-4 bs-glass border-0">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Your impact</CardTitle>
             <CardDescription>
@@ -102,8 +102,8 @@ export default function Dashboard() {
             <div className="flex items-center gap-3">
               <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: `${Math.max(4, impactPct)}%` }}
+                  className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_205)] to-primary transition-all"
+                  style={{ width: `${Math.max(4, impactPct)}%`, boxShadow: "0 0 12px oklch(0.86 0.19 162 / 50%)" }}
                 />
               </div>
               <span className="bs-mono text-sm text-primary">{impactPct}%</span>
@@ -113,7 +113,7 @@ export default function Dashboard() {
 
         <div className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           {/* My reports */}
-          <Card className="border-border/60 bg-card/60">
+          <Card className="bs-glass border-0">
             <CardHeader className="pb-3">
               <CardTitle className="text-base">My reports</CardTitle>
             </CardHeader>
@@ -174,7 +174,7 @@ export default function Dashboard() {
 
           <div className="space-y-4">
             {/* Recently confirmed */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Issues I've confirmed</CardTitle>
               </CardHeader>
@@ -206,7 +206,7 @@ export default function Dashboard() {
             </Card>
 
             {/* Leaderboard */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Top contributors</CardTitle>
               </CardHeader>
@@ -240,7 +240,7 @@ export default function Dashboard() {
 
         {/* Global pulse */}
         {stats && (
-          <Card className="mt-6 border-border/60 bg-card/60">
+          <Card className="mt-6 bs-glass border-0">
             <CardContent className="flex flex-wrap items-center justify-between gap-4 p-5">
               <div className="flex items-center gap-2">
                 <IssueDot severity="critical" ping />

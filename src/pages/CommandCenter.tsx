@@ -153,7 +153,7 @@ export default function CommandCenter() {
             { label: "Unverified", value: stats?.reported ?? "—", icon: ShieldCheck, color: "text-muted-foreground" },
             { label: "Total ever", value: stats?.total ?? "—", icon: ListChecks, color: "text-foreground" },
           ].map((k) => (
-            <Card key={k.label} className="border-border/60 bg-card/60">
+            <Card key={k.label} className="bs-glass border-0">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <p className="bs-hud">{k.label}</p>
@@ -167,7 +167,7 @@ export default function CommandCenter() {
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {/* Category load */}
-          <Card className="border-border/60 bg-card/60">
+          <Card className="bs-glass border-0">
             <CardHeader className="pb-3">
               <CardTitle className="text-base">Top issue categories</CardTitle>
               <CardDescription>all-time report distribution</CardDescription>
@@ -184,8 +184,8 @@ export default function CommandCenter() {
                         </span>
                         <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
                           <div
-                            className="h-full rounded-full bg-primary transition-all"
-                            style={{ width: `${(n / maxCategory) * 100}%` }}
+                            className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_205)] to-primary transition-all"
+                            style={{ width: `${(n / maxCategory) * 100}%`, boxShadow: "0 0 10px oklch(0.86 0.19 162 / 40%)" }}
                           />
                         </div>
                         <span className="bs-mono w-8 text-right text-sm text-muted-foreground">
@@ -201,7 +201,7 @@ export default function CommandCenter() {
           </Card>
 
           {/* Lifecycle funnel */}
-          <Card className="border-border/60 bg-card/60">
+          <Card className="bs-glass border-0">
             <CardHeader className="pb-3">
               <CardTitle className="text-base">Resolution flow</CardTitle>
               <CardDescription>
@@ -235,7 +235,7 @@ export default function CommandCenter() {
         </div>
 
         {/* Hotspots */}
-        <Card className="mt-6 border-destructive/30 bg-card/60">
+        <Card className="mt-6 bs-glass border border-destructive/30">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
               <Flame className="size-4 text-destructive" /> Hotspot detection
@@ -292,7 +292,7 @@ export default function CommandCenter() {
         </Card>
 
         {/* Priority queue */}
-        <Card className="mt-6 border-border/60 bg-card/60">
+        <Card className="mt-6 bs-glass border-0">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
               <ListChecks className="size-4 text-primary" /> Priority queue

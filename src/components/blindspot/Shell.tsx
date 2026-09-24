@@ -30,11 +30,16 @@ export function Shell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur">
+    <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+      <div
+        className="bs-orb pointer-events-none size-[420px] -top-48 left-1/3 opacity-30"
+        style={{ background: "oklch(0.86 0.19 162 / 12%)" }}
+      />
+      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur">
+        <div className="bs-topline absolute inset-x-0 bottom-0" />
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary bs-glow">
               <Radar className="size-4.5" />
             </div>
             <span className="hidden text-sm font-bold tracking-tight sm:block">
@@ -53,9 +58,9 @@ export function Shell({ children }: { children: ReactNode }) {
                   key={l.to}
                   to={l.to}
                   className={cn(
-                    "flex items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-xs font-medium transition-all sm:text-sm",
                     active
-                      ? "bg-primary/15 text-primary"
+                      ? "bg-primary/15 text-primary shadow-[0_0_16px_oklch(0.86_0.19_162/25%)]"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   )}
                 >

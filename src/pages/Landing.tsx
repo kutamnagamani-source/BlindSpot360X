@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -71,6 +71,7 @@ export default function Landing() {
   const navigate = useNavigate();
   const stats = useQuery(api.issues.getStats);
   const seedIfEmpty = useMutation(api.seed.seedIfEmpty);
+  const tiltRef = useRef<HTMLDivElement>(null);
 
   // First run: populate the demo zone so the map and stats are alive.
   useEffect(() => {
@@ -78,6 +79,27 @@ export default function Landing() {
       void seedIfEmpty();
     }
   }, [stats, seedIfEmpty]);
+
+  // Pointer-tracked 3D tilt for the hero radar card.
+  useEffect(() => {
+    const el = tiltRef.current;
+    if (!el) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      el.style.transform = `rotateY(${px * 14}deg) rotateX(${py * -14}deg) translateZ(0)`;
+    };
+    const onLeave = () => {
+      el.style.transform = "rotateY(0deg) rotateX(0deg)";
+    };
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
 
   const counters = [
     { label: "problems discovered", value: stats?.total ?? 0, icon: Eye },
@@ -90,10 +112,20 @@ export default function Landing() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="min-h-screen bg-background text-foreground"
+      className="relative min-h-screen bg-background text-foreground"
     >
+      {/* Ambient orbs */}
+      <div
+        className="bs-orb size-[520px] -top-40 -left-40 opacity-50"
+        style={{ background: "oklch(0.86 0.19 162 / 16%)" }}
+      />
+      <div
+        className="bs-orb size-[420px] top-[38%] -right-32 opacity-40"
+        style={{ background: "oklch(0.78 0.13 205 / 14%)" }}
+      />
+
       {/* ─── Nav ─── */}
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="flex size-9 items-center justify-center rounded-lg bg-primary/15 text-primary bs-glow">
@@ -149,9 +181,7 @@ export default function Landing() {
               See the problems
               <br />
               hiding{" "}
-              <span className="text-primary bs-glow rounded-lg px-1">
-                in plain sight
-              </span>
+              <span className="bs-gradient-text">in plain sight</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Broken streetlights, flooded drains, blocked walkways — everyone
@@ -180,78 +210,101 @@ export default function Landing() {
                 Browse the issue map
               </Button>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <div className="mt-10 grid max-w-lg grid-cols-3 gap-3">
               {counters.map((c) => (
-                <div key={c.label} className="flex items-center gap-3">
-                  <c.icon className="size-4 text-primary" />
-                  <div>
-                    <p className="bs-mono text-xl font-bold leading-none">
-                      {c.value.toLocaleString()}
-                    </p>
-                    <p className="bs-hud mt-1">{c.label}</p>
-                  </div>
-                </div>
+                <Card key={c.label} className="bs-glass bs-lift border-0">
+                  <CardContent className="flex items-center gap-2.5 p-3.5">
+                    <c.icon className="size-4 shrink-0 text-primary" />
+                    <div className="min-w-0">
+                      <p className="bs-mono text-xl font-bold leading-none">
+                        {c.value.toLocaleString()}
+                      </p>
+                      <p className="mt-1 truncate text-[10px] uppercase tracking-wider text-muted-foreground">
+                        {c.label}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
 
-          {/* Radar panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.5 }}
-            className="relative hidden lg:block"
-          >
-            <Card className="relative overflow-hidden border-primary/25 bg-card/80">
-              <div className="bs-grid-bg absolute inset-0 opacity-60" />
-              <div className="bs-scanline" style={{ animationDelay: "0.8s" }} />
-              <div className="relative flex items-center justify-between border-b border-border/60 px-5 py-3">
-                <span className="bs-hud">blindspot360 radar</span>
-                <span className="bs-mono text-xs text-primary">● LIVE</span>
-              </div>
-              <CardContent className="relative p-6">
-                <div className="relative aspect-square overflow-hidden rounded-lg border border-border/60">
-                  <div className="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_center,oklch(0.82_0.19_155/8%),transparent_65%)]" />
-                  {HERO_DOTS.map((d, i) => (
-                    <div
-                      key={i}
-                      className="absolute"
-                      style={{ top: d.top, left: d.left }}
-                    >
-                      <IssueDot severity={d.severity} size={14} ping />
-                    </div>
-                  ))}
-                  <div className="absolute bottom-3 left-3 rounded border border-border/70 bg-background/80 px-2.5 py-2 backdrop-blur">
-                    {(["critical", "high", "medium", "low"] as Severity[]).map(
-                      (s) => (
-                        <div key={s} className="flex items-center gap-2 py-0.5">
-                          <span
-                            className="size-2 rounded-full"
-                            style={{ background: SEVERITY_META[s].hex }}
-                          />
-                          <span className="bs-mono text-[10px] uppercase text-muted-foreground">
-                            {SEVERITY_META[s].label}
-                          </span>
-                        </div>
-                      ),
-                    )}
+          {/* 3D tilt radar panel */}
+          <div className="bs-scene relative hidden lg:block">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+            >
+              <div ref={tiltRef} className="bs-tilt">
+                <Card className="bs-glass relative overflow-hidden border-0">
+                  <div className="bs-grid-bg absolute inset-0 opacity-60" />
+                  <div className="bs-scanline" style={{ animationDelay: "0.8s" }} />
+                  <div className="relative flex items-center justify-between border-b border-border/60 px-5 py-3">
+                    <span className="bs-hud">blindspot360 radar</span>
+                    <span className="bs-mono text-xs text-primary">● LIVE</span>
                   </div>
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="bs-mono text-[11px] text-muted-foreground">
-                    17.4432° N, 78.3823° E
-                  </span>
-                  <span className="bs-mono text-[11px] text-primary">
-                    {stats ? `${stats.active} active signals` : "scanning…"}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                  <CardContent className="relative p-6">
+                    <div className="relative aspect-square overflow-hidden rounded-lg border border-border/60">
+                      <div className="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_center,oklch(0.86_0.19_162/10%),transparent_65%)]" />
+                      {/* Decorative rotating rings */}
+                      <div
+                        className="bs-spin-slow absolute inset-6 rounded-full border border-primary/15"
+                        style={{ borderStyle: "dashed" }}
+                      />
+                      <div
+                        className="bs-spin-slow absolute inset-16 rounded-full border border-[--severity-high]/10"
+                        style={{
+                          borderStyle: "dashed",
+                          animationDirection: "reverse",
+                          animationDuration: "24s",
+                        }}
+                      />
+                      {HERO_DOTS.map((d, i) => (
+                        <div
+                          key={i}
+                          className="absolute"
+                          style={{ top: d.top, left: d.left, transform: "translateZ(30px)" }}
+                        >
+                          <IssueDot severity={d.severity} size={14} ping />
+                        </div>
+                      ))}
+                      <div
+                        className="absolute bottom-3 left-3 rounded border border-border/70 bg-background/80 px-2.5 py-2 backdrop-blur"
+                        style={{ transform: "translateZ(45px)" }}
+                      >
+                        {(["critical", "high", "medium", "low"] as Severity[]).map(
+                          (s) => (
+                            <div key={s} className="flex items-center gap-2 py-0.5">
+                              <span
+                                className="size-2 rounded-full"
+                                style={{ background: SEVERITY_META[s].hex }}
+                              />
+                              <span className="bs-mono text-[10px] uppercase text-muted-foreground">
+                                {SEVERITY_META[s].label}
+                              </span>
+                            </div>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="bs-mono text-[11px] text-muted-foreground">
+                        17.4432° N, 78.3823° E
+                      </span>
+                      <span className="bs-mono text-[11px] text-primary">
+                        {stats ? `${stats.active} active signals` : "scanning…"}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ─── The problem ─── */}
+      {/* ─── Why this exists ─── */}
       <section className="border-b border-border/60 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid items-center gap-10 lg:grid-cols-2">
@@ -259,7 +312,7 @@ export default function Landing() {
               <p className="bs-hud">why this exists</p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
                 It&apos;s not that nobody sees them.
-                <span className="text-primary"> It&apos;s that nobody tracks them.</span>
+                <span className="bs-gradient-text"> It&apos;s that nobody tracks them.</span>
               </h2>
               <p className="mt-5 leading-relaxed text-muted-foreground">
                 A pothole gets mentioned in three different chats and fixed by
@@ -272,7 +325,7 @@ export default function Landing() {
                 {ISSUE_CATEGORIES.map((c) => (
                   <div
                     key={c.key}
-                    className="rounded-lg border border-border/60 bg-card/50 p-3 text-center"
+                    className="bs-glass bs-lift rounded-lg p-3 text-center"
                   >
                     <c.icon className="mx-auto size-5 text-primary" />
                     <p className="mt-2 text-xs font-medium">{c.label}</p>
@@ -280,7 +333,7 @@ export default function Landing() {
                 ))}
               </div>
             </div>
-            <Card className="border-border/70 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardContent className="p-6 sm:p-8">
                 <p className="bs-hud">site analysis — zone 4</p>
                 <div className="mt-4 space-y-4">
@@ -301,7 +354,7 @@ export default function Landing() {
                           whileInView={{ width: `${row.pct}%` }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.8, ease: "easeOut" }}
-                          className="h-full rounded-full bg-primary"
+                          className="h-full rounded-full bg-gradient-to-r from-[--severity-critical] via-[--severity-high] to-primary"
                         />
                       </div>
                     </div>
@@ -342,7 +395,7 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="relative rounded-lg border border-border/60 bg-card/50 p-4"
+                className="bs-glass bs-lift relative rounded-lg p-4"
               >
                 <span className="bs-mono text-xs text-primary">{s.n}</span>
                 <p className="mt-2 font-semibold">{s.t}</p>
@@ -372,7 +425,7 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: (i % 3) * 0.08, duration: 0.4 }}
               >
-                <Card className="h-full border-border/60 bg-card/50 transition-colors hover:border-primary/40">
+                <Card className="bs-glass bs-lift h-full border-0">
                   <CardContent className="p-6">
                     <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                       <f.icon className="size-5" />
@@ -390,7 +443,7 @@ export default function Landing() {
       {/* ─── Philosophy strip ─── */}
       <section className="border-b border-border/60 py-16">
         <div className="mx-auto grid max-w-6xl gap-4 px-4 sm:px-6 md:grid-cols-2">
-          <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-card/50 p-6">
+          <div className="bs-glass flex items-start gap-4 rounded-lg p-6">
             <EyeOff className="mt-1 size-6 shrink-0 text-muted-foreground" />
             <div>
               <p className="font-semibold">AI proposes, people decide</p>
@@ -401,7 +454,7 @@ export default function Landing() {
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-card/50 p-6">
+          <div className="bs-glass flex items-start gap-4 rounded-lg p-6">
             <Eye className="mt-1 size-6 shrink-0 text-primary" />
             <div>
               <p className="font-semibold">Built for the overlooked</p>
@@ -418,14 +471,20 @@ export default function Landing() {
       {/* ─── CTA ─── */}
       <section className="relative overflow-hidden py-24">
         <div className="bs-grid-bg absolute inset-0" />
+        <div className="bs-scanline" style={{ animationDelay: "1.4s" }} />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/15 text-primary bs-glow">
-            <Radar className="size-7" />
+          <div className="bs-scene mx-auto w-fit">
+            <div
+              className="flex size-16 items-center justify-center rounded-2xl bg-primary/15 text-primary bs-glow"
+              style={{ transform: "rotateX(12deg)" }}
+            >
+              <Radar className="size-8" />
+            </div>
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
             The next thing you walk past
             <br />
-            could be today&apos;s first fix
+            <span className="bs-gradient-text">could be today&apos;s first fix</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
             One site, one team, one shared source of truth. BlindSpot360 makes

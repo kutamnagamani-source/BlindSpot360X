@@ -229,7 +229,7 @@ export default function IssueDetail() {
         </div>
 
         {/* Lifecycle tracker */}
-        <Card className="mt-6 border-border/60 bg-card/60">
+        <Card className="mt-6 bs-glass border-0">
           <CardContent className="p-5">
             <div className="flex items-center">
               {LIFECYCLE_STEPS.map((s, i) => {
@@ -276,7 +276,7 @@ export default function IssueDetail() {
           {/* Left column */}
           <div className="space-y-6">
             {/* Photo / before-after */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Camera className="size-4 text-primary" /> Evidence
@@ -335,7 +335,7 @@ export default function IssueDetail() {
             </Card>
 
             {/* Description */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Details</CardTitle>
               </CardHeader>
@@ -368,7 +368,7 @@ export default function IssueDetail() {
           <div className="space-y-6">
             {/* AI panel */}
             {issue.aiDetected && (
-              <Card className="border-primary/25 bg-card/60">
+              <Card className="bs-glass border border-primary/25">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Sparkles className="size-4 text-primary" /> AI analysis
@@ -397,7 +397,7 @@ export default function IssueDetail() {
             )}
 
             {/* Community verification */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <ShieldCheck className="size-4 text-primary" /> Community verification
@@ -471,7 +471,7 @@ export default function IssueDetail() {
             </Card>
 
             {/* Timeline */}
-            <Card className="border-border/60 bg-card/60">
+            <Card className="bs-glass border-0">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <MessageSquare className="size-4 text-primary" /> Activity & discussion
