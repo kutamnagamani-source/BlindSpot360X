@@ -37,32 +37,32 @@ const FEATURES = [
   {
     icon: ScanEye,
     title: "Snap & analyze",
-    body: "Photograph a problem. BlindSpot's vision pipeline suggests what it sees — a pothole, a dead streetlight — and you confirm the truth.",
+    body: "Photograph a problem and the vision pipeline proposes what it sees — a pothole, a dead streetlight. It never files anything on its own; a teammate always confirms.",
   },
   {
     icon: MapPinned,
-    title: "The BlindSpot Map",
-    body: "Every discovered problem becomes a colored signal on a live map. Critical red, high orange, resolved teal. The city's blind spots, visible.",
+    title: "The issue map",
+    body: "Every report becomes a severity-colored signal on a live map. Critical red, resolved teal. Our field blind spots, finally visible.",
   },
   {
     icon: Gauge,
     title: "Transparent priority",
-    body: "No black-box scores. Safety, people affected, accessibility and duration combine into an explainable priority you can audit.",
+    body: "No black-box scores. Safety, reach, accessibility and time-open combine into an explainable 0–100 score anyone on the team can audit.",
   },
   {
     icon: ShieldCheck,
-    title: "Community verification",
-    body: "Neighbors confirm what's still there and what's actually fixed. Reputation is earned through verified usefulness, not noise.",
+    title: "Peer verification",
+    body: "Teammates confirm what's still present and what's genuinely fixed. Reputation is earned through verified usefulness, never noise.",
   },
   {
     icon: BrainCircuit,
-    title: "Pattern intelligence",
-    body: "Individual reports roll up into hotspot detection and area intelligence — where issues cluster and how a neighborhood is trending.",
+    title: "Hotspot intelligence",
+    body: "Individual reports roll up into zones, trends and clusters — see where problems concentrate before they become escalations.",
   },
   {
     icon: Radar,
     title: "Command Center",
-    body: "A live ops dashboard for municipalities and campus teams: priority queue, category load, and resolution throughput at a glance.",
+    body: "The internal ops dashboard: priority queue, category load, resolution throughput, and every open thread in one serious-looking place.",
   },
 ];
 
@@ -100,8 +100,8 @@ export default function Landing() {
               <Radar className="size-5" />
             </div>
             <div className="leading-none">
-              <span className="text-lg font-bold tracking-tight">BLINDSPOT</span>
-              <p className="bs-hud mt-0.5 hidden sm:block">see what others miss</p>
+              <span className="text-lg font-bold tracking-tight">BLINDSPOT360</span>
+              <p className="bs-hud mt-0.5 hidden sm:block">internal ops · see what others miss</p>
             </div>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
@@ -143,7 +143,7 @@ export default function Landing() {
               className="w-fit gap-2 border-primary/40 bg-primary/10 text-primary"
             >
               <Activity className="size-3.5" />
-              Civic intelligence platform
+              Internal tool · computer-vision issue tracking
             </Badge>
             <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
               See the problems
@@ -154,9 +154,10 @@ export default function Landing() {
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Broken streetlights, flooded drains, blocked sidewalks — we walk
-              past them until they become invisible. BlindSpot turns what you
-              notice into verified, prioritized, trackable fixes.
+              Broken streetlights, flooded drains, blocked walkways — everyone
+              on the team walks past them until they become invisible.
+              BlindSpot360 turns what one person notices into a verified,
+              prioritized, trackable fix for everyone.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button
@@ -167,7 +168,7 @@ export default function Landing() {
                 }
               >
                 <ScanEye className="size-5" />
-                Scan your surroundings
+                Report something broken
               </Button>
               <Button
                 size="lg"
@@ -176,7 +177,7 @@ export default function Landing() {
                 onClick={() => navigate("/map")}
               >
                 <MapPinned className="size-5" />
-                Explore the map
+                Browse the issue map
               </Button>
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -205,7 +206,7 @@ export default function Landing() {
               <div className="bs-grid-bg absolute inset-0 opacity-60" />
               <div className="bs-scanline" style={{ animationDelay: "0.8s" }} />
               <div className="relative flex items-center justify-between border-b border-border/60 px-5 py-3">
-                <span className="bs-hud">blindspot radar</span>
+                <span className="bs-hud">blindspot360 radar</span>
                 <span className="bs-mono text-xs text-primary">● LIVE</span>
               </div>
               <CardContent className="relative p-6">
@@ -255,16 +256,16 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <p className="bs-hud">the problem</p>
+              <p className="bs-hud">why this exists</p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
                 It&apos;s not that nobody sees them.
                 <span className="text-primary"> It&apos;s that nobody tracks them.</span>
               </h2>
               <p className="mt-5 leading-relaxed text-muted-foreground">
-                A pothole gets reported to three different people and fixed by
-                none. The same broken light gets photographed a dozen times and
-                still sits dark for months. Seeing a problem isn&apos;t the
-                missing layer — <span className="text-foreground">systematic noticing is</span>:
+                A pothole gets mentioned in three different chats and fixed by
+                no one. The same dead streetlight gets photographed a dozen
+                times and still sits dark for months. Seeing a problem isn&apos;t
+                the missing layer — <span className="text-foreground">systematic noticing is</span>:
                 document → verify → prioritize → follow up → resolve.
               </p>
               <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -281,7 +282,7 @@ export default function Landing() {
             </div>
             <Card className="border-border/70 bg-card/60">
               <CardContent className="p-6 sm:p-8">
-                <p className="bs-hud">area analysis — zone 4</p>
+                <p className="bs-hud">site analysis — zone 4</p>
                 <div className="mt-4 space-y-4">
                   {[
                     { label: "Road damage", pct: 42 },
@@ -311,7 +312,7 @@ export default function Landing() {
                     ⚠ Infrastructure hotspot detected
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    27 reports this month, ↑34% vs previous month. Most common: road damage.
+                    27 reports this month, ↑34% vs last month. Most common: road damage.
                   </p>
                 </div>
               </CardContent>
@@ -325,7 +326,7 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="bs-hud">how it works</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
-            From a glance to a fixed street in five steps
+            From a glance to a closed issue in five steps
           </h2>
           <div className="mt-10 grid gap-4 md:grid-cols-5">
             {[
@@ -333,7 +334,7 @@ export default function Landing() {
               { n: "02", t: "AI analyzes", d: "Vision suggests the object and the potential issue." },
               { n: "03", t: "You confirm", d: "AI never decides — people verify what's real." },
               { n: "04", t: "Prioritize", d: "Transparent scoring puts danger first, honestly." },
-              { n: "05", t: "Track to fix", d: "Lifecycle tracking until the community confirms it's gone." },
+              { n: "05", t: "Track to fix", d: "Lifecycle tracking until a teammate confirms it's gone." },
             ].map((s, i) => (
               <motion.div
                 key={s.n}
@@ -392,10 +393,10 @@ export default function Landing() {
           <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-card/50 p-6">
             <EyeOff className="mt-1 size-6 shrink-0 text-muted-foreground" />
             <div>
-              <p className="font-semibold">AI proposes, people dispose</p>
+              <p className="font-semibold">AI proposes, people decide</p>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 Detection results are always framed as &ldquo;potential issues&rdquo;.
-                Every report and every resolution is confirmed by a human before
+                Every report and every resolution is confirmed by a teammate before
                 the map changes.
               </p>
             </div>
@@ -403,7 +404,7 @@ export default function Landing() {
           <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-card/50 p-6">
             <Eye className="mt-1 size-6 shrink-0 text-primary" />
             <div>
-              <p className="font-semibold">Designed for the overlooked</p>
+              <p className="font-semibold">Built for the overlooked</p>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 Accessibility problems get their own category, their own severity
                 weighting, and a map filter — because the people affected notice
@@ -422,13 +423,13 @@ export default function Landing() {
             <Radar className="size-7" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            The next problem you walk past
+            The next thing you walk past
             <br />
-            could be the last one on your street
+            could be today&apos;s first fix
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Start with one campus, one neighborhood, one city. BlindSpot is
-            built to make the invisible visible — one verified report at a time.
+            One site, one team, one shared source of truth. BlindSpot360 makes
+            the invisible visible — one verified report at a time.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button
@@ -439,11 +440,11 @@ export default function Landing() {
               }
             >
               <ScanEye className="size-5" />
-              Scan your surroundings
+              Report something broken
             </Button>
             <Button size="lg" variant="outline" asChild className="text-base">
               <Link to="/map">
-                Open the BlindSpot Map <ArrowRight className="size-5" />
+                Open the issue map <ArrowRight className="size-5" />
               </Link>
             </Button>
           </div>
@@ -455,7 +456,10 @@ export default function Landing() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2">
             <Radar className="size-4 text-primary" />
-            <span className="text-sm font-bold tracking-tight">BLINDSPOT</span>
+            <span className="text-sm font-bold tracking-tight">BLINDSPOT360</span>
+            <span className="bs-mono ml-2 hidden text-xs text-muted-foreground sm:inline">
+              internal build · v0.1
+            </span>
           </div>
           <p className="bs-mono text-xs text-muted-foreground">
             see what everyone else stopped noticing

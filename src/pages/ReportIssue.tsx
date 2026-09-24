@@ -203,7 +203,7 @@ export default function ReportIssue() {
         aiPotentialIssue: analysis?.potentialIssue,
         photoStorageId: storageId,
       });
-      toast.success("Report filed — it's now on the BlindSpot Map.");
+      toast.success("Report filed — it's now live on the BlindSpot360 map.");
       navigate(`/issue/${id}`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to submit report.");
@@ -290,8 +290,8 @@ export default function ReportIssue() {
                   </div>
                   <p className="font-medium">Take a photo or upload one</p>
                   <p className="max-w-xs text-center text-xs text-muted-foreground">
-                    Faces and license plates are never published. The AI only
-                    looks for infrastructure problems.
+                    Faces and license plates are never published — the vision
+                    model only looks for infrastructure problems.
                   </p>
                 </button>
               ) : (
@@ -566,8 +566,8 @@ export default function ReportIssue() {
                 />
                 <p className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
                   <MapPin className="size-3" />
-                  Approximate location only — exact coordinates stay between you
-                  and the fix crew.
+                  An approximate label is fine — the exact coordinates travel
+                  with the report.
                 </p>
               </div>
 

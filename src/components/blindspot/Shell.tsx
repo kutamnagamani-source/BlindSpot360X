@@ -38,7 +38,7 @@ export function Shell({ children }: { children: ReactNode }) {
               <Radar className="size-4.5" />
             </div>
             <span className="hidden text-sm font-bold tracking-tight sm:block">
-              BLINDSPOT
+              BLINDSPOT360
             </span>
           </Link>
 

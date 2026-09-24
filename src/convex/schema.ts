@@ -149,7 +149,10 @@ const schema = defineSchema(
         v.literal("status_changed"),
         v.literal("resolved"),
         v.literal("resolution_verified"),
+        v.literal("comment"),
       ),
+      // Denormalized display name for comment authors.
+      authorName: v.optional(v.string()),
       // e.g. "Status changed: verified → in_progress"
       message: v.string(),
       createdAt: v.number(),

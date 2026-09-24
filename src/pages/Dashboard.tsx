@@ -40,7 +40,7 @@ export default function Dashboard() {
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="bs-hud">field operator workspace</p>
+            <p className="bs-hud">team workspace</p>
             <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
               Welcome{user?.name ? `, ${user.name}` : " back"}
             </h1>
@@ -92,7 +92,7 @@ export default function Dashboard() {
         {/* Community impact meter */}
         <Card className="mt-4 border-border/60 bg-card/60">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Community impact</CardTitle>
+            <CardTitle className="text-base">Your impact</CardTitle>
             <CardDescription>
               Earned through verified contributions — +10 per report, +3 per
               confirmation, +5 per verified resolution.
@@ -176,14 +176,14 @@ export default function Dashboard() {
             {/* Recently confirmed */}
             <Card className="border-border/60 bg-card/60">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Issues I confirmed</CardTitle>
+                <CardTitle className="text-base">Issues I've confirmed</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {myConfirmations === undefined ? (
                   <div className="h-20 animate-pulse rounded-lg bg-muted/50" />
                 ) : myConfirmations.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
-                    Confirm issues on the map to build verified local knowledge.
+                    Confirm open issues on the map to build verified site knowledge.
                   </p>
                 ) : (
                   myConfirmations.slice(0, 5).map((issue) => (
@@ -215,7 +215,7 @@ export default function Dashboard() {
                   <div className="h-20 animate-pulse rounded-lg bg-muted/50" />
                 ) : leaderboard.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
-                    Be the first verified contributor in your area.
+                    Be the first verified contributor on the team.
                   </p>
                 ) : (
                   leaderboard.slice(0, 5).map((u, i) => (
@@ -246,7 +246,7 @@ export default function Dashboard() {
                 <IssueDot severity="critical" ping />
                 <span className="text-sm">
                   <span className="bs-mono font-bold">{stats.active}</span> active
-                  issues citywide
+                  issues across our sites
                 </span>
               </div>
               <div className="flex items-center gap-2">

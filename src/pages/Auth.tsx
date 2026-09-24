@@ -110,13 +110,14 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="relative min-h-screen flex flex-col bg-background">
+      <div className="bs-grid-bg absolute inset-0" />
+      <div className="bs-scanline" />
 
-      
       {/* Auth Content */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="relative flex-1 flex items-center justify-center">
         <div className="flex items-center justify-center h-full flex-col">
-        <Card className="min-w-[350px] pb-0 border shadow-md">
+        <Card className="min-w-[350px] pb-0 border-border/70 bg-card/85 backdrop-blur">
           {step === "signIn" ? (
             <>
               <CardHeader className="text-center">
@@ -130,9 +131,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       onClick={() => navigate("/")}
                     />
                   </div>
-                <CardTitle className="text-xl">Get Started</CardTitle>
+                <CardTitle className="text-xl">Sign in to BlindSpot360</CardTitle>
                 <CardDescription>
-                  Enter your email to log in or sign up
+                  Enter your team email to log in or create your account —
+                  we'll email you a one-time code.
                 </CardDescription>
               </CardHeader>
               <form onSubmit={handleEmailSubmit}>
@@ -196,9 +198,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           ) : (
             <>
               <CardHeader className="text-center mt-4">
-                <CardTitle>Check your email</CardTitle>
+                <CardTitle>Check your inbox</CardTitle>
                 <CardDescription>
-                  We've sent a code to {step.email}
+                  We sent a 6-digit code to {step.email}. It expires in 15
+                  minutes.
                 </CardDescription>
               </CardHeader>
               <form onSubmit={handleOtpSubmit}>
@@ -278,15 +281,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           )}
 
           <div className="py-4 px-6 text-xs text-center text-muted-foreground bg-muted border-t rounded-b-lg">
-            Secured by{" "}
-            <a
-              href="https://freebuff.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-primary transition-colors"
-            >
-              freebuff.com
-            </a>
+            <span className="bs-mono">BlindSpot360 · internal build v0.1</span>
           </div>
         </Card>
         </div>

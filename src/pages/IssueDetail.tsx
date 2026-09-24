@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -6,6 +7,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -35,6 +37,8 @@ import {
   Sparkles,
   Wrench,
   ClipboardCheck,
+  MessageSquare,
+  Send,
 } from "lucide-react";
 import type { Severity } from "@/convex/schema";
 
@@ -48,11 +52,13 @@ export default function IssueDetail() {
 
   const confirmIssue = useMutation(api.issues.confirmIssue);
   const disputeIssue = useMutation(api.issues.disputeIssue);
+  const addComment = useMutation(api.issues.addComment);
   const updateStatus = useMutation(api.issues.updateStatus);
   const verifyResolution = useMutation(api.issues.verifyResolution);
   const generateUploadUrl = useMutation(api.issues.generateUploadUrl);
 
   const [busy, setBusy] = useState(false);
+  const [comment, setComment] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (issue === undefined) {
@@ -467,26 +473,66 @@ export default function IssueDetail() {
             {/* Timeline */}
             <Card className="border-border/60 bg-card/60">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Timeline</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <MessageSquare className="size-4 text-primary" /> Activity & discussion
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
+                {/* Comment composer */}
+                <form
+                  className="flex gap-2"
+                  onSubmit={async (e: FormEvent) => {
+                    e.preventDefault();
+                    if (!comment.trim()) return;
+                    setBusy(true);
+                    try {
+                      await addComment({ issueId: issue._id, body: comment });
+                      setComment("");
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "Failed to comment.");
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  <Input
+                    value={comment}
+                    onChange={(ev) => setComment(ev.target.value)}
+                    placeholder="Add context, status notes, or questions…"
+                    maxLength={2000}
+                    className="flex-1"
+                  />
+                  <Button type="submit" size="icon" disabled={busy || !comment.trim()}>
+                    <Send className="size-4" />
+                  </Button>
+                </form>
                 {issue.events.map((e) => (
                   <div key={e._id} className="flex gap-3">
                     <div className="flex flex-col items-center">
-                      <IssueDot
-                        severity={
-                          e.type === "resolved" || e.type === "resolution_verified"
-                            ? "low"
-                            : (issue.severity as Severity)
-                        }
-                        size={8}
-                      />
+                      {e.type === "comment" ? (
+                        <div className="flex size-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                          <MessageSquare className="size-3" />
+                        </div>
+                      ) : (
+                        <IssueDot
+                          severity={
+                            e.type === "resolved" || e.type === "resolution_verified"
+                              ? "low"
+                              : (issue.severity as Severity)
+                          }
+                          size={8}
+                        />
+                      )}
                       <div className="mt-1 w-px flex-1 bg-border" />
                     </div>
                     <div className="pb-1">
+                      {e.type === "comment" && e.authorName && (
+                        <p className="text-xs font-medium text-primary">{e.authorName}</p>
+                      )}
                       <p className="text-sm">{e.message}</p>
                       <p className="bs-mono mt-0.5 text-xs text-muted-foreground">
                         {timeAgo(e.createdAt)}
+                        {e.type === "comment" ? " · via app" : ""}
                       </p>
                     </div>
                   </div>

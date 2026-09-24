@@ -14,8 +14,8 @@ export const seedIfEmpty = mutation({
 
     // A demo admin account to own the seeded issues.
     const adminId = await ctx.db.insert("users", {
-      name: "BlindSpot Command",
-      email: "command@blindspot.city",
+      name: "BlindSpot360 Ops",
+      email: "ops@blindspot360.dev",
       role: "admin",
       reputation: 320,
       reportsCount: 12,

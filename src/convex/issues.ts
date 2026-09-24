@@ -214,6 +214,34 @@ export const confirmIssue = mutation({
   },
 });
 
+export const addComment = mutation({
+  args: {
+    issueId: v.id("issues"),
+    body: v.string(),
+  },
+  handler: async (ctx, { issueId, body }) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) throw new Error("Must be signed in to comment.");
+    const trimmed = body.trim();
+    if (!trimmed) throw new Error("Comment cannot be empty.");
+    if (trimmed.length > 2000) throw new Error("Comment is too long (max 2000 characters).");
+
+    const issue = await ctx.db.get(issueId);
+    if (!issue) throw new Error("Issue not found.");
+
+    const user = await ctx.db.get(userId);
+    await ctx.db.insert("issueEvents", {
+      issueId,
+      userId,
+      type: "comment",
+      authorName: user?.name ?? user?.email ?? "A teammate",
+      message: trimmed,
+      createdAt: Date.now(),
+    });
+    return { ok: true };
+  },
+});
+
 export const disputeIssue = mutation({
   args: { issueId: v.id("issues") },
   handler: async (ctx, { issueId }) => {
