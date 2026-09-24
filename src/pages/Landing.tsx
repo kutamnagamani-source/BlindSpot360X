@@ -22,6 +22,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ISSUE_CATEGORIES, SEVERITY_META } from "@/lib/issues-ui";
+import { Scene3D } from "@/components/blindspot/Scene3D";
 import type { Severity } from "@/convex/schema";
 
 const HERO_DOTS: Array<{ top: string; left: string; severity: Severity; delay: string }> = [
@@ -114,15 +115,8 @@ export default function Landing() {
       transition={{ duration: 0.4 }}
       className="relative min-h-screen bg-background text-foreground"
     >
-      {/* Ambient orbs */}
-      <div
-        className="bs-orb size-[520px] -top-40 -left-40 opacity-50"
-        style={{ background: "oklch(0.86 0.19 162 / 16%)" }}
-      />
-      <div
-        className="bs-orb size-[420px] top-[38%] -right-32 opacity-40"
-        style={{ background: "oklch(0.78 0.13 205 / 14%)" }}
-      />
+      {/* 3D environment */}
+      <Scene3D variant="landing" />
 
       {/* ─── Nav ─── */}
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur">
@@ -236,8 +230,8 @@ export default function Landing() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.5 }}
             >
-              <div ref={tiltRef} className="bs-tilt">
-                <Card className="bs-glass relative overflow-hidden border-0">
+              <div ref={tiltRef} className="bs-tilt" style={{ transform: "rotateY(-6deg) rotateX(4deg)" }}>
+                <Card className="bs-glass relative overflow-hidden border-0 bs-glow">
                   <div className="bs-grid-bg absolute inset-0 opacity-60" />
                   <div className="bs-scanline" style={{ animationDelay: "0.8s" }} />
                   <div className="relative flex items-center justify-between border-b border-border/60 px-5 py-3">
@@ -246,7 +240,7 @@ export default function Landing() {
                   </div>
                   <CardContent className="relative p-6">
                     <div className="relative aspect-square overflow-hidden rounded-lg border border-border/60">
-                      <div className="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_center,oklch(0.86_0.19_162/10%),transparent_65%)]" />
+                      <div className="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_center,oklch(0.84_0.12_85/10%),transparent_65%)]" />
                       {/* Decorative rotating rings */}
                       <div
                         className="bs-spin-slow absolute inset-6 rounded-full border border-primary/15"

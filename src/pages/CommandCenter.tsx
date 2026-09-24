@@ -127,7 +127,7 @@ export default function CommandCenter() {
   };
 
   return (
-    <Shell>
+    <Shell sceneVariant="command">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -184,8 +184,8 @@ export default function CommandCenter() {
                         </span>
                         <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
                           <div
-                            className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_205)] to-primary transition-all"
-                            style={{ width: `${(n / maxCategory) * 100}%`, boxShadow: "0 0 10px oklch(0.86 0.19 162 / 40%)" }}
+                            className="h-full rounded-full bg-gradient-to-r from-[oklch(0.7_0.1_60)] to-primary transition-all"
+                            style={{ width: `${(n / maxCategory) * 100}%`, boxShadow: "0 0 10px oklch(0.84 0.12 85 / 40%)" }}
                           />
                         </div>
                         <span className="bs-mono w-8 text-right text-sm text-muted-foreground">

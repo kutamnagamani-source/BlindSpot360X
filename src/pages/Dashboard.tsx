@@ -36,7 +36,7 @@ export default function Dashboard() {
   const impactPct = Math.min(100, Math.round((impact / 100) * 100));
 
   return (
-    <Shell>
+    <Shell sceneVariant="dashboard">
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -102,8 +102,8 @@ export default function Dashboard() {
             <div className="flex items-center gap-3">
               <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[oklch(0.78_0.13_205)] to-primary transition-all"
-                  style={{ width: `${Math.max(4, impactPct)}%`, boxShadow: "0 0 12px oklch(0.86 0.19 162 / 50%)" }}
+                  className="h-full rounded-full bg-gradient-to-r from-[oklch(0.7_0.1_60)] to-primary transition-all"
+                  style={{ width: `${Math.max(4, impactPct)}%`, boxShadow: "0 0 12px oklch(0.84 0.12 85 / 50%)" }}
                 />
               </div>
               <span className="bs-mono text-sm text-primary">{impactPct}%</span>

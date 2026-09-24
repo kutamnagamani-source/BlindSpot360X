@@ -16,6 +16,7 @@ import {
 
 import { useAuth } from "@/hooks/use-auth";
 import logo from "@/assets/logo.svg";
+import { Scene3D } from "@/components/blindspot/Scene3D";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -111,8 +112,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-background">
-      <div className="bs-grid-bg absolute inset-0" />
-      <div className="bs-scanline" />
+      <Scene3D variant="auth" />
 
       {/* Auth Content */}
       <div className="relative flex-1 flex items-center justify-center">

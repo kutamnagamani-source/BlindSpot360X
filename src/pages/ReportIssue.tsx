@@ -219,7 +219,7 @@ export default function ReportIssue() {
   ];
 
   return (
-    <Shell>
+    <Shell sceneVariant="report">
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
         <p className="bs-hud">new report</p>
         <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">

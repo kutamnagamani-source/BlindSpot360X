@@ -134,7 +134,7 @@ export default function BlindSpotMap() {
   ).length;
 
   return (
-    <Shell>
+    <Shell sceneVariant="map">
       <div className="flex h-[calc(100vh-3.5rem)] flex-col">
         {/* Toolbar */}
         <div className="relative flex flex-wrap items-center gap-2 border-b border-border/70 bg-background/90 px-4 py-2.5 backdrop-blur sm:px-6">

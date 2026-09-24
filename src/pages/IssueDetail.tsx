@@ -63,7 +63,7 @@ export default function IssueDetail() {
 
   if (issue === undefined) {
     return (
-      <Shell>
+      <Shell sceneVariant="detail">
         <div className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6">
           <div className="h-64 animate-pulse rounded-lg bg-muted/50" />
         </div>
@@ -73,7 +73,7 @@ export default function IssueDetail() {
 
   if (issue === null) {
     return (
-      <Shell>
+      <Shell sceneVariant="detail">
         <div className="mx-auto w-full max-w-4xl px-4 py-16 text-center sm:px-6">
           <p className="text-lg font-semibold">Issue not found</p>
           <p className="mt-2 text-sm text-muted-foreground">
