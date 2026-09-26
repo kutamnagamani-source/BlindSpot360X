@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation, useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
@@ -56,6 +56,7 @@ export default function IssueDetail() {
   const updateStatus = useMutation(api.issues.updateStatus);
   const verifyResolution = useMutation(api.issues.verifyResolution);
   const generateUploadUrl = useMutation(api.issues.generateUploadUrl);
+  const mirrorPhoto = useAction(api.supabaseStorage.mirrorPhoto);
 
   const [busy, setBusy] = useState(false);
   const [comment, setComment] = useState("");
@@ -115,7 +116,9 @@ export default function IssueDetail() {
     }
   };
 
-  const uploadPhoto = async (file: File): Promise<Id<"_storage"> | undefined> => {
+  const uploadPhoto = async (
+    file: File,
+  ): Promise<Id<"_storage"> | undefined> => {
     const postUrl = await generateUploadUrl();
     const res = await fetch(postUrl, {
       method: "POST",
@@ -131,13 +134,24 @@ export default function IssueDetail() {
     setBusy(true);
     try {
       let resolvedPhotoStorageId: Id<"_storage"> | undefined;
+      let supabaseResolvedPhotoUrl: string | undefined;
       if (file) {
         resolvedPhotoStorageId = await uploadPhoto(file);
+        if (resolvedPhotoStorageId) {
+          supabaseResolvedPhotoUrl =
+            (await mirrorPhoto({
+              storageId: resolvedPhotoStorageId,
+              fileName: file.name,
+              contentType: file.type || "image/jpeg",
+              kind: "resolution",
+            }).catch(() => undefined)) ?? undefined;
+        }
       }
       await updateStatus({
         issueId: issue._id,
         status: "resolved",
         resolvedPhotoStorageId,
+        supabaseResolvedPhotoUrl,
       });
       toast.success("Marked resolved — the community can now verify it.");
     } catch (err) {

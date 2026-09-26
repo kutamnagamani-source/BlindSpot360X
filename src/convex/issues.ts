@@ -97,6 +97,8 @@ export const reportIssue = mutation({
     aiConfidence: v.optional(v.number()),
     aiPotentialIssue: v.optional(v.string()),
     photoStorageId: v.optional(v.id("_storage")),
+    // Stable CDN URL when the photo was mirrored to Supabase Storage.
+    supabasePhotoUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -109,9 +111,11 @@ export const reportIssue = mutation({
 
     const issueNumber = ((await ctx.db.query("issues").collect()).length || 0) + 184;
 
-    const photoUrl = args.photoStorageId
-      ? (await ctx.storage.getUrl(args.photoStorageId)) ?? undefined
-      : undefined;
+    const photoUrl =
+      args.supabasePhotoUrl ??
+      (args.photoStorageId
+        ? (await ctx.storage.getUrl(args.photoStorageId)) ?? undefined
+        : undefined);
 
     const issueId = await ctx.db.insert("issues", {
       issueNumber,
@@ -266,8 +270,10 @@ export const updateStatus = mutation({
     issueId: v.id("issues"),
     status: issueStatusValidator,
     resolvedPhotoStorageId: v.optional(v.id("_storage")),
+    // Stable CDN URL when the after-photo was mirrored to Supabase Storage.
+    supabaseResolvedPhotoUrl: v.optional(v.string()),
   },
-  handler: async (ctx, { issueId, status, resolvedPhotoStorageId }) => {
+  handler: async (ctx, { issueId, status, resolvedPhotoStorageId, supabaseResolvedPhotoUrl }) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null) throw new Error("Must be signed in.");
     const issue = await ctx.db.get(issueId);
@@ -283,7 +289,9 @@ export const updateStatus = mutation({
       if (resolvedPhotoStorageId) {
         patch.resolvedPhotoStorageId = resolvedPhotoStorageId;
         patch.resolvedPhotoUrl =
-          (await ctx.storage.getUrl(resolvedPhotoStorageId)) ?? undefined;
+          supabaseResolvedPhotoUrl ??
+          (await ctx.storage.getUrl(resolvedPhotoStorageId)) ??
+          undefined;
       }
       events.push({ type: "resolved", message: "Marked as resolved" });
       // Resolution earns +5 reputation.

@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { useNavigate } from "react-router";
@@ -39,6 +39,7 @@ const STEPS = ["Capture", "AI analysis", "Details", "Location"] as const;
 export default function ReportIssue() {
   const navigate = useNavigate();
   const generateUploadUrl = useMutation(api.issues.generateUploadUrl);
+  const mirrorPhoto = useAction(api.supabaseStorage.mirrorPhoto);
 
   const [step, setStep] = useState(0);
   const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
@@ -171,8 +172,11 @@ export default function ReportIssue() {
     }
     setSubmitting(true);
     try {
-      // Upload photo to Convex storage (standard generateUploadUrl flow)
+      // Upload photo to Convex storage, then mirror it to Supabase Storage
+      // for a stable CDN URL. Falls back to Convex-only when Supabase
+      // credentials are not configured yet.
       let storageId: Id<"_storage"> | undefined;
+      let supabasePhotoUrl: string | undefined;
       if (photoFile) {
         const postUrl = await generateUploadUrl();
         const res = await fetch(postUrl, {
@@ -183,6 +187,13 @@ export default function ReportIssue() {
         if (res.ok) {
           const { storageId: sid } = await res.json();
           storageId = sid as Id<"_storage">;
+          supabasePhotoUrl =
+            (await mirrorPhoto({
+              storageId,
+              fileName: photoFile.name,
+              contentType: photoFile.type || "image/jpeg",
+              kind: "report",
+            }).catch(() => undefined)) ?? undefined;
         }
       }
 
@@ -202,6 +213,7 @@ export default function ReportIssue() {
         aiConfidence: analysis?.confidence,
         aiPotentialIssue: analysis?.potentialIssue,
         photoStorageId: storageId,
+        supabasePhotoUrl,
       });
       toast.success("Report filed — it's now live on the BlindSpot360 map.");
       navigate(`/issue/${id}`);
