@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { cn } from "@/lib/utils";
 import { Scene3D, type SceneVariant } from "@/components/blindspot/Scene3D";
+import { SageChat } from "@/components/blindspot/SageChat";
 import {
   LayoutDashboard,
   MapPinned,
@@ -81,6 +82,9 @@ export function Shell({ children, sceneVariant }: { children: ReactNode; sceneVa
       </header>
 
       <main className="flex-1">{children}</main>
+
+      {/* SAGE — site-wide assistant (Gemini, BlindSpot360 topics only) */}
+      <SageChat />
     </div>
   );
 }

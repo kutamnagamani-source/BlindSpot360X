@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { ISSUE_CATEGORIES, SEVERITY_META } from "@/lib/issues-ui";
 import { Scene3D } from "@/components/blindspot/Scene3D";
+import { SageChat } from "@/components/blindspot/SageChat";
 import type { Severity } from "@/convex/schema";
 
 const HERO_DOTS: Array<{ top: string; left: string; severity: Severity; delay: string }> = [
@@ -519,6 +520,9 @@ export default function Landing() {
           </p>
         </div>
       </footer>
+
+      {/* SAGE — site-wide assistant (Gemini, BlindSpot360 topics only) */}
+      <SageChat />
     </motion.div>
   );
 }
