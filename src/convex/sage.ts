@@ -61,7 +61,11 @@ Example refusals:
 
 // ─── Models ───────────────────────────────────────────────────────────────────
 
-const PREFERRED_MODELS = ["gemini-2.0-flash", "gemini-1.5-flash"];
+const PREFERRED_MODELS = [
+  "gemini-2.5-flash",
+  "gemini-2.5-flash-lite",
+  "gemini-2.0-flash",
+];
 
 function getModelName(): string {
   const override = process.env.GEMINI_MODEL;
